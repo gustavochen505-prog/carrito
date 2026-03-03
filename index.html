@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CARRITO DE COMPRAS - PRODUCTOS DE INFORMATICA</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <header class="top-header">
+    <div class="top-main">
+      <div class="brand">
+        <span class="brand-main">TecnoMarket</span>
+        <span class="brand-sub">Informatica en linea</span>
+      </div>
+      <div class="search-wrap">
+        <input id="searchInput" type="search" placeholder="Buscar laptop, monitor, SSD, auriculares..." />
+      </div>
+      <div class="header-controls">
+        <button id="themeToggle" class="btn secondary">Modo Oscuro</button>
+        <div class="currency-switcher">
+          <label for="currencySelect">Moneda:</label>
+          <select id="currencySelect">
+            <option value="GTQ">Quetzales (Q)</option>
+            <option value="USD">Dolares ($)</option>
+          </select>
+        </div>
+        <div class="mini-cart">Carrito: <span id="cartCount">0</span></div>
+      </div>
+    </div>
+    <nav id="categoryChips" class="category-nav"></nav>
+  </header>
+
+  <main class="layout">
+    <section class="catalog">
+      <div class="catalog-head">
+        <h2>CARRITO DE COMPRAS - PRODUCTOS DE INFORMATICA</h2>
+        <p id="resultsInfo">0 productos</p>
+      </div>
+      <div id="productsContainer" class="products-grid"></div>
+    </section>
+
+    <aside class="cart-panel">
+      <h2>Carrito</h2>
+      <ul id="cartList" class="cart-list"></ul>
+      <div class="cart-summary">
+        <p><strong>Total:</strong> <span id="cartTotal">Q 0.00</span></p>
+      </div>
+      <div class="cart-actions">
+        <button id="clearCartBtn" class="btn danger">Vaciar carrito</button>
+      </div>
+
+      <hr />
+
+      <section class="payment-section">
+        <h3>Pago</h3>
+        <form id="paymentForm" novalidate>
+          <label for="fullName">Nombre completo</label>
+          <input id="fullName" type="text" required />
+
+          <label for="cardNumber">Numero de tarjeta (16 digitos)</label>
+          <input id="cardNumber" type="text" inputmode="numeric" maxlength="16" required />
+
+          <label for="cvv">CVV (3 digitos)</label>
+          <input id="cvv" type="text" inputmode="numeric" maxlength="3" required />
+
+          <label for="amountPaid">Monto entregado</label>
+          <input id="amountPaid" type="number" min="0" step="0.01" required />
+
+          <button type="submit" class="btn primary">Validar pago</button>
+        </form>
+        <p id="paymentMessage" class="message"></p>
+        <button id="pdfBtn" class="btn secondary" disabled>Generar recibo en PDF</button>
+      </section>
+    </aside>
+  </main>
+
+  <div id="imageModal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <button id="closeModalBtn" class="close-btn" aria-label="Cerrar vista previa">X</button>
+      <img id="modalImage" src="" alt="Vista previa del producto" />
+      <p id="modalTitle"></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
