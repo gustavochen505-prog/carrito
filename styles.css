@@ -294,6 +294,11 @@ body.dark .secondary {
   gap: 0.45rem;
 }
 
+.account-section form {
+  display: grid;
+  gap: 0.45rem;
+}
+
 input,
 select {
   border: 1px solid var(--border);
@@ -349,6 +354,141 @@ select {
   cursor: pointer;
 }
 
+.company-footer {
+  margin-top: 1rem;
+  background: #ececec;
+  color: #4b5563;
+  border-top: 1px solid #d6d6d6;
+}
+
+.footer-contact {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0.8rem 1rem;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+.contact-block h3 {
+  margin: 0 0 0.6rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.contact-pill {
+  display: block;
+  width: fit-content;
+  margin-bottom: 0.45rem;
+  background: #f0e6de;
+  color: #ea580c;
+  text-decoration: none;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+}
+
+.feedback-block {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: #6b7280;
+}
+
+.feedback-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 2px solid #c5c5c5;
+  display: grid;
+  place-items: center;
+  font-size: 0.85rem;
+}
+
+.footer-social {
+  border-top: 1px solid #d9d9d9;
+  text-align: center;
+  padding: 0.8rem 1rem 0.5rem;
+}
+
+.social-title,
+.social-tag {
+  margin: 0.2rem 0;
+}
+
+.icon-links {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.icon-links a {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #9ca3af;
+  color: #6b7280;
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+
+.footer-legal {
+  text-align: center;
+  padding: 0.8rem 1rem 1.1rem;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.footer-legal p {
+  margin: 0.45rem auto;
+  max-width: 980px;
+}
+
+.payment-brands {
+  margin: 0.7rem 0;
+  display: flex;
+  justify-content: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+.payment-brands span {
+  background: #fff;
+  border: 1px solid #cfd4db;
+  color: #374151;
+  border-radius: 7px;
+  padding: 0.35rem 0.75rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.legal-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.1rem;
+  margin-top: 0.55rem;
+}
+
+.legal-links a {
+  color: #4b5563;
+  text-decoration: none;
+}
+
+.legal-links a:hover {
+  text-decoration: underline;
+}
+
+.copyright {
+  font-size: 0.82rem;
+}
+
 @media (max-width: 1100px) {
   .top-main {
     grid-template-columns: 1fr;
@@ -356,5 +496,13 @@ select {
 
   .layout {
     grid-template-columns: 1fr;
+  }
+
+  .footer-contact {
+    grid-template-columns: 1fr;
+  }
+
+  .feedback-block {
+    justify-self: start;
   }
 }

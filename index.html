@@ -73,8 +73,78 @@
         <p id="paymentMessage" class="message"></p>
         <button id="pdfBtn" class="btn secondary" disabled>Generar recibo en PDF</button>
       </section>
+
+      <hr />
+
+      <section class="account-section">
+        <h3>Crear cuenta</h3>
+        <form id="accountForm" novalidate>
+          <label for="accountName">Nombre completo</label>
+          <input id="accountName" type="text" required />
+
+          <label for="accountEmail">Correo electronico</label>
+          <input id="accountEmail" type="email" required />
+
+          <label for="accountPassword">Contrasena</label>
+          <input id="accountPassword" type="password" minlength="8" required />
+
+          <label for="accountConfirmPassword">Confirmar contrasena</label>
+          <input id="accountConfirmPassword" type="password" minlength="8" required />
+
+          <button type="submit" class="btn primary">Crear cuenta</button>
+        </form>
+        <p id="accountMessage" class="message"></p>
+      </section>
     </aside>
   </main>
+
+  <footer class="company-footer">
+    <section class="footer-contact">
+      <div class="contact-block">
+        <h3>Contactanos</h3>
+        <a href="#" class="contact-pill">Llamar a una tienda</a>
+        <a href="mailto:sugerencias@tecnomarket.com" class="contact-pill">sugerencias@tecnomarket.com</a>
+        <a href="#" class="contact-pill">Chat en linea</a>
+      </div>
+      <div class="feedback-block">
+        <div class="feedback-icon">TM</div>
+        <p>Como ha sido tu experiencia?<br />Danos tu opinion.</p>
+      </div>
+    </section>
+
+    <section class="footer-social">
+      <p class="social-title">Siguenos en nuestras redes</p>
+      <p class="social-tag">#TeConectaHaciaLaTecnologia</p>
+      <div class="icon-links">
+        <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">f</a>
+        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">ig</a>
+        <a href="https://www.x.com" target="_blank" rel="noopener noreferrer">X</a>
+        <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">in</a>
+        <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer">t</a>
+        <a href="https://www.whatsapp.com" target="_blank" rel="noopener noreferrer">wa</a>
+        <a href="https://www.twitch.tv" target="_blank" rel="noopener noreferrer">tw</a>
+        <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">yt</a>
+      </div>
+    </section>
+
+    <section class="footer-legal">
+      <p>
+        Todas las imagenes mostradas son ilustrativas. Los nombres comerciales pertenecen a sus respectivas marcas.
+        Precios y disponibilidad pueden cambiar sin previo aviso.
+      </p>
+      <div class="payment-brands">
+        <span>VISA</span>
+        <span>Mastercard</span>
+        <span>BAC</span>
+      </div>
+      <div class="legal-links">
+        <a href="#">Terminos y condiciones</a>
+        <a href="#">Politica de privacidad</a>
+        <a href="#">Politica de cookies</a>
+      </div>
+      <p class="copyright">Copyright © 1989-2026 TecnoMarket S.A. Todos los derechos reservados.</p>
+    </section>
+  </footer>
 
   <div id="imageModal" class="modal" aria-hidden="true">
     <div class="modal-content">
