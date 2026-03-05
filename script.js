@@ -85,8 +85,6 @@ const cartCount = document.getElementById("cartCount");
 const categoryChips = document.getElementById("categoryChips");
 const searchInput = document.getElementById("searchInput");
 const resultsInfo = document.getElementById("resultsInfo");
-const accountForm = document.getElementById("accountForm");
-const accountMessage = document.getElementById("accountMessage");
 
 function formatCurrency(valueGTQ) {
   if (selectedCurrency === "USD") return "$ " + (valueGTQ / USD_RATE).toFixed(2);
@@ -246,54 +244,137 @@ function generatePDF() {
   if (!lastReceipt) return;
 
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-
-  doc.setFontSize(14);
-  doc.text("Recibo - TecnoMarket", 10, 15);
-  doc.setFontSize(11);
-  doc.text(`Fecha: ${lastReceipt.date}`, 10, 24);
-  doc.text(`Cliente: ${lastReceipt.customer}`, 10, 31);
-
-  let y = 42;
-  doc.text("Productos:", 10, y);
-  y += 7;
-
-  lastReceipt.items.forEach((item) => {
-    doc.text(`${item.name} x${item.quantity} - Q ${(item.priceGTQ * item.quantity).toFixed(2)}`, 10, y);
-    y += 7;
+  const doc = new jsPDF({ unit: "mm", format: "a4" });
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const margin = 14;
+  const rowHeight = 8;
+  const tableStartY = 56;
+  const footerY = pageHeight - 12;
+  const numberFmt = new Intl.NumberFormat("es-GT", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
   });
 
-  y += 4;
-  doc.text(`Total: Q ${lastReceipt.totalGTQ.toFixed(2)}`, 10, y);
-  y += 7;
-  doc.text(`Pagado: Q ${lastReceipt.paidGTQ.toFixed(2)}`, 10, y);
-  y += 7;
-  doc.text(`Cambio: Q ${lastReceipt.changeGTQ.toFixed(2)}`, 10, y);
-  doc.save("recibo_carrito_informatica.pdf");
-}
+  const currency = (value) => `Q ${numberFmt.format(value)}`;
+  const addFooter = (page) => {
+    doc.setDrawColor(210, 210, 210);
+    doc.line(margin, footerY - 4, pageWidth - margin, footerY - 4);
+    doc.setTextColor(110, 110, 110);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+    doc.text("Documento generado por TecnoMarket", margin, footerY);
+    doc.text(`Pagina ${page}`, pageWidth - margin, footerY, { align: "right" });
+  };
 
-function handleAccountCreation(event) {
-  event.preventDefault();
+  doc.setFillColor(22, 35, 56);
+  doc.rect(0, 0, pageWidth, 30, "F");
+  doc.setTextColor(255, 255, 255);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(18);
+  doc.text("RECIBO DE COMPRA", margin, 14);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(11);
+  doc.text("TecnoMarket", margin, 22);
 
-  const name = document.getElementById("accountName").value.trim();
-  const email = document.getElementById("accountEmail").value.trim();
-  const password = document.getElementById("accountPassword").value;
-  const confirmPassword = document.getElementById("accountConfirmPassword").value;
+  doc.setTextColor(35, 35, 35);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(11);
+  doc.text("Datos del cliente", margin, 38);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.text(`Cliente: ${lastReceipt.customer}`, margin, 44);
+  doc.text(`Fecha de emision: ${lastReceipt.date}`, margin, 49);
 
-  const nameOk = name.length >= 3;
-  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const passwordOk = password.length >= 8;
-  const matchOk = password === confirmPassword;
+  const colCodeX = margin;
+  const colProductX = 35;
+  const colQtyX = 138;
+  const colUnitX = 156;
+  const colTotalX = pageWidth - margin;
+  let y = tableStartY;
+  let page = 1;
 
-  if (!nameOk || !emailOk || !passwordOk || !matchOk) {
-    accountMessage.textContent = "Datos invalidos. Verifica nombre, correo y contrasenas.";
-    accountMessage.style.color = "#b91c1c";
-    return;
+  const drawTableHeader = (topY) => {
+    doc.setFillColor(237, 240, 245);
+    doc.rect(margin, topY - 5, pageWidth - margin * 2, rowHeight, "F");
+    doc.setTextColor(25, 25, 25);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    doc.text("ID", colCodeX + 1, topY);
+    doc.text("Descripcion", colProductX, topY);
+    doc.text("Cant.", colQtyX, topY, { align: "right" });
+    doc.text("Precio Unit.", colUnitX, topY, { align: "right" });
+    doc.text("Subtotal", colTotalX, topY, { align: "right" });
+    doc.setDrawColor(210, 210, 210);
+    doc.line(margin, topY + 2, pageWidth - margin, topY + 2);
+  };
+
+  drawTableHeader(y);
+  y += 8;
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9.5);
+  lastReceipt.items.forEach((item) => {
+    const subtotal = item.priceGTQ * item.quantity;
+    if (y > footerY - 26) {
+      addFooter(page);
+      doc.addPage();
+      page += 1;
+      y = 22;
+      drawTableHeader(y);
+      y += 8;
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9.5);
+    }
+
+    const productName = doc.splitTextToSize(item.name, 98);
+    const textY = y;
+    const rowLines = Math.max(productName.length, 1);
+    const dynamicHeight = Math.max(rowHeight, rowLines * 5 + 3);
+
+    doc.text(String(item.id), colCodeX + 1, textY);
+    doc.text(productName, colProductX, textY);
+    doc.text(String(item.quantity), colQtyX, textY, { align: "right" });
+    doc.text(currency(item.priceGTQ), colUnitX, textY, { align: "right" });
+    doc.text(currency(subtotal), colTotalX, textY, { align: "right" });
+    doc.setDrawColor(235, 235, 235);
+    doc.line(margin, y + dynamicHeight - 3, pageWidth - margin, y + dynamicHeight - 3);
+    y += dynamicHeight;
+  });
+
+  if (y > footerY - 42) {
+    addFooter(page);
+    doc.addPage();
+    page += 1;
+    y = 26;
   }
 
-  accountMessage.textContent = `Cuenta creada para ${name}.`;
-  accountMessage.style.color = "#15803d";
-  accountForm.reset();
+  const boxX = pageWidth - 82;
+  doc.setDrawColor(195, 195, 195);
+  doc.setFillColor(250, 250, 250);
+  doc.roundedRect(boxX, y + 4, 68, 34, 2, 2, "FD");
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.setTextColor(30, 30, 30);
+  doc.text("Total", boxX + 5, y + 12);
+  doc.text(currency(lastReceipt.totalGTQ), boxX + 63, y + 12, { align: "right" });
+  doc.text("Pagado", boxX + 5, y + 20);
+  doc.text(currency(lastReceipt.paidGTQ), boxX + 63, y + 20, { align: "right" });
+  doc.setFont("helvetica", "bold");
+  doc.text("Cambio", boxX + 5, y + 29);
+  doc.text(currency(lastReceipt.changeGTQ), boxX + 63, y + 29, { align: "right" });
+
+  doc.setFont("helvetica", "italic");
+  doc.setFontSize(9);
+  doc.setTextColor(90, 90, 90);
+  doc.text("Gracias por su compra.", margin, pageHeight - 20);
+
+  for (let i = 1; i <= page; i += 1) {
+    doc.setPage(i);
+    addFooter(i);
+  }
+
+  doc.save("recibo_formal_tecnomarket.pdf");
 }
 
 function toggleTheme() {
@@ -353,7 +434,6 @@ currencySelect.addEventListener("change", () => {
 
 themeToggle.addEventListener("click", toggleTheme);
 paymentForm.addEventListener("submit", validatePayment);
-accountForm.addEventListener("submit", handleAccountCreation);
 pdfBtn.addEventListener("click", generatePDF);
 closeModalBtn.addEventListener("click", closeImagePreview);
 imageModal.addEventListener("click", (event) => {

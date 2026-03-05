@@ -42,19 +42,26 @@
     </section>
 
     <aside class="cart-panel">
-      <h2>Carrito</h2>
-      <ul id="cartList" class="cart-list"></ul>
-      <div class="cart-summary">
-        <p><strong>Total:</strong> <span id="cartTotal">Q 0.00</span></p>
-      </div>
-      <div class="cart-actions">
-        <button id="clearCartBtn" class="btn danger">Vaciar carrito</button>
+      <div class="cart-panel-head">
+        <h2>Carrito</h2>
+        <p class="panel-kicker">Resumen en tiempo real</p>
       </div>
 
-      <hr />
+      <section class="cart-box">
+        <ul id="cartList" class="cart-list"></ul>
+        <div class="cart-summary">
+          <p><strong>Total:</strong> <span id="cartTotal">Q 0.00</span></p>
+        </div>
+        <div class="cart-actions">
+          <button id="clearCartBtn" class="btn danger">Vaciar carrito</button>
+        </div>
+      </section>
 
       <section class="payment-section">
-        <h3>Pago</h3>
+        <div class="payment-head">
+          <h3>Pago</h3>
+          <p class="payment-note">Transaccion segura cifrada</p>
+        </div>
         <form id="paymentForm" novalidate>
           <label for="fullName">Nombre completo</label>
           <input id="fullName" type="text" required />
@@ -72,28 +79,6 @@
         </form>
         <p id="paymentMessage" class="message"></p>
         <button id="pdfBtn" class="btn secondary" disabled>Generar recibo en PDF</button>
-      </section>
-
-      <hr />
-
-      <section class="account-section">
-        <h3>Crear cuenta</h3>
-        <form id="accountForm" novalidate>
-          <label for="accountName">Nombre completo</label>
-          <input id="accountName" type="text" required />
-
-          <label for="accountEmail">Correo electronico</label>
-          <input id="accountEmail" type="email" required />
-
-          <label for="accountPassword">Contrasena</label>
-          <input id="accountPassword" type="password" minlength="8" required />
-
-          <label for="accountConfirmPassword">Confirmar contrasena</label>
-          <input id="accountConfirmPassword" type="password" minlength="8" required />
-
-          <button type="submit" class="btn primary">Crear cuenta</button>
-        </form>
-        <p id="accountMessage" class="message"></p>
       </section>
     </aside>
   </main>
